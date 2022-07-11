@@ -26,3 +26,5 @@ ehthumbs.db
 Thumbs.db
 .vscode/
 *.bak
+#  Исключаем свои папки из репозитория git rm -r --cached testotus/
+testotus/
