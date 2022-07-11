@@ -22,7 +22,7 @@ func Top10(s string) []string {
 		// 	mapFrequency[word] = 1
 		// }
 	}
-	mapNumbers := make(map[int][]string, 0) // [2:[one, two], 3:[three, for]]
+	mapNumbers := make(map[int][]string) // [2:[one, two], 3:[three, for]]
 	for key, value := range mapFrequency {
 		mapNumbers[value] = append(mapNumbers[value], key)
 		// if _, ok := mapNumbers[value]; ok {
