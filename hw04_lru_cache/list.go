@@ -69,11 +69,12 @@ func (l *list) Remove(i *ListItem) {
 		return
 	}
 	l.Length--
-	if i.Next == nil {
+	switch {
+	case i.Next == nil:
 		i.Prev.Next = nil
-	} else if i.Prev == nil {
+	case i.Prev == nil:
 		i.Next.Prev = nil
-	} else {
+	default:
 		i.Prev.Next = i.Next
 		i.Next.Prev = i.Prev
 	}

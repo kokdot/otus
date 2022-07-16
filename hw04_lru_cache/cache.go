@@ -47,9 +47,8 @@ func (l lruCache) Get(key Key) (interface{}, bool) {
 		listQueue.PushFront(prtVal)
 		value := prtVal.Value
 		return value, true
-	} else {
-		return nil, false
 	}
+	return nil, false
 }
 
 func (l lruCache) Clear() {
