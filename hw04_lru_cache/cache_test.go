@@ -55,6 +55,16 @@ func TestCache(t *testing.T) {
 		c.Set("ddd", 400)
 		_, ok1 := c.Get("aaa")
 		require.False(t, ok1)
+		c.Clear()
+		val, ok := c.Get("ccc")
+		require.False(t, ok)
+		require.Nil(t, val)
+		val, ok = c.Get("bbb")
+		require.False(t, ok)
+		require.Nil(t, val)
+		val, ok = c.Get("ddd")
+		require.False(t, ok)
+		require.Nil(t, val)
 	})
 }
 
