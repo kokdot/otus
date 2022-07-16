@@ -1,11 +1,7 @@
 package hw04lrucache
 
 import (
-	// "math/rand"
-	// "strconv"
-	// "sync"
 	"testing"
-	// "fmt"
 
 	"github.com/stretchr/testify/require"
 )
@@ -62,7 +58,7 @@ func TestCache(t *testing.T) {
 	})
 }
 
-// func TestCacheMultithreading(t *testing.T) {
+/* func TestCacheMultithreading(t *testing.T) {
 // 	t.Skip() // Remove me if task with asterisk completed.
 
 // 	c := NewCache(10)
@@ -84,4 +80,5 @@ func TestCache(t *testing.T) {
 // 	}()
 
 // 	wg.Wait()
-// }
+}
+*/

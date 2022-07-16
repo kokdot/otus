@@ -1,11 +1,5 @@
 package hw04lrucache
 
-// package main
-
-// import (
-// 	"fmt"
-// )
-
 type List interface {
 	Len() int
 	Front() *ListItem
@@ -63,7 +57,6 @@ func (l *list) PushBack(v interface{}) *ListItem {
 		newL.Prev = l.BackPoint
 		l.BackPoint.Next = &newL
 		l.BackPoint = &newL
-
 	} else {
 		l.FrontPoint = &newL
 		l.BackPoint = &newL

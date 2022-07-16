@@ -1,6 +1,5 @@
 package hw04lrucache
-// package main
- 
+
 import (
 	"testing"
 

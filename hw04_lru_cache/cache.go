@@ -55,11 +55,6 @@ func (l lruCache) Get(key Key) (interface{}, bool) {
 func (l lruCache) Clear() {
 }
 
-// type cacheItem struct {
-// 	key   Key
-// 	value interface{}
-// }
-
 func NewCache(capacity int) Cache {
 	return &lruCache{
 		capacity: capacity,
