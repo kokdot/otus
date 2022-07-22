@@ -8,9 +8,9 @@ import (
 const ConstNumbers = 10
 
 func Top10(s string) []string {
-	var sliceResult []string
+	var sliceResult1 []string
 	if s == "" {
-		return sliceResult
+		return sliceResult1
 	}
 	sliseForString := strings.Fields(s)  // [one, two, three]
 	mapFrequency := make(map[string]int) // [one: 2, two: 3, three:2]
@@ -18,6 +18,7 @@ func Top10(s string) []string {
 		mapFrequency[word]++
 	}
 
+	sliceResult := make([]string, 0, len(mapFrequency))
 	for key := range mapFrequency {
 		sliceResult = append(sliceResult, key)
 	}
