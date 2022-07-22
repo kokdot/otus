@@ -18,7 +18,7 @@ func Top10(s string) []string {
 		mapFrequency[word]++
 	}
 
-	sliceResult := make([]string, 0, len(mapFrequency))
+	sliceResult := make([]string, 0, len(mapFrequency)+1)
 	for key := range mapFrequency {
 		sliceResult = append(sliceResult, key)
 	}
