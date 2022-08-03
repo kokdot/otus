@@ -4,10 +4,11 @@ import (
 	"strconv"
 	"testing"
 	"time"
+	"fmt"
 
 	"github.com/stretchr/testify/require"
 )
-
+ 
 const (
 	sleepPerStage = time.Millisecond * 100
 	fault         = sleepPerStage / 2
@@ -30,13 +31,14 @@ func TestPipeline(t *testing.T) {
 	}
 
 	stages := []Stage{
-		g("Dummy", func(v interface{}) interface{} { return v }),
-		g("Multiplier (* 2)", func(v interface{}) interface{} { return v.(int) * 2 }),
-		g("Adder (+ 100)", func(v interface{}) interface{} { return v.(int) + 100 }),
-		g("Stringifier", func(v interface{}) interface{} { return strconv.Itoa(v.(int)) }),
+		g("Dummy", func(v interface{}) interface{} {fmt.Println("v---11111--", v); return v}),
+		g("Multiplier (* 2)", func(v interface{}) interface{} {fmt.Println("v----2222----", v.(int) * 2);  return v.(int) * 2 }),
+		g("Adder (+ 100)", func(v interface{}) interface{} {fmt.Println("v----333-----", v.(int) + 100);  return v.(int) + 100 }),
+		g("Stringifier", func(v interface{}) interface{} {fmt.Println("v>>>>>----444444--->>>>ffffffffffffffffffffff"); s := strconv.Itoa(v.(int)); fmt.Printf("%T, %v\n", s, s); return strconv.Itoa(v.(int)) }),
 	}
 
 	t.Run("simple case", func(t *testing.T) {
+		t.Skip()
 		in := make(Bi)
 		data := []int{1, 2, 3, 4, 5}
 
@@ -50,6 +52,7 @@ func TestPipeline(t *testing.T) {
 		result := make([]string, 0, 10)
 		start := time.Now()
 		for s := range ExecutePipeline(in, nil, stages...) {
+			fmt.Println("____________________________________________", result)
 			result = append(result, s.(string))
 		}
 		elapsed := time.Since(start)
@@ -62,6 +65,7 @@ func TestPipeline(t *testing.T) {
 	})
 
 	t.Run("done case", func(t *testing.T) {
+		// t.Skip()
 		in := make(Bi)
 		done := make(Bi)
 		data := []int{1, 2, 3, 4, 5}
@@ -87,6 +91,7 @@ func TestPipeline(t *testing.T) {
 		}
 		elapsed := time.Since(start)
 
+		fmt.Println("result____________&&&&&&&&&&&& = ", result,"len(result) = " ,  len(result))
 		require.Len(t, result, 0)
 		require.Less(t, int64(elapsed), int64(abortDur)+int64(fault))
 	})
