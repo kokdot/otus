@@ -1,4 +1,4 @@
-module github.com/kokdot/hw02_unpack_string
+module github.com/kokdot/otus/hw02_unpack_string
 
 go 1.16
 
