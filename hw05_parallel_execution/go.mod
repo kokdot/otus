@@ -1,4 +1,4 @@
-module github.com/kokdot/hw05_parallel_execution
+module github.com/kokdot/otus/hw05_parallel_execution
 
 go 1.16
 

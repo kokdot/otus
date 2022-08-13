@@ -45,7 +45,7 @@ func TestRun(t *testing.T) {
 		tasks := make([]Task, 0, tasksCount)
 
 		var runTasksCount int32
-		
+
 		for i := 0; i < tasksCount; i++ {
 			err := fmt.Errorf("error from task %d", i)
 			tasks = append(tasks, func() error {
@@ -105,7 +105,7 @@ func TestRunConcurrency(t *testing.T) {
 	for i := 0; i < len(tasks); i++ {
 		tasks[i] = func() error {
 			atomic.AddInt32(&runTaskCount, 1)
-			<- waitch
+			<-waitch
 			return nil
 		}
 	}
@@ -117,19 +117,19 @@ func TestRunConcurrency(t *testing.T) {
 
 	require.Eventually(t, func() bool {
 		return atomic.LoadInt32(&runTaskCount) == workersCount
-	}, 5 * time.Second, time.Millisecond)
+	}, 5*time.Second, time.Millisecond)
 
 	close(waitch)
 
 	var runErr error
 	require.Eventually(t, func() bool {
 		select {
-		case runErr = <- runErrCh:
+		case runErr = <-runErrCh:
 			return true
 		default:
 			return false
 		}
-	}, 5 * time.Second, time.Millisecond)
+	}, 5*time.Second, time.Millisecond)
 
 	require.NoError(t, runErr)
 }
