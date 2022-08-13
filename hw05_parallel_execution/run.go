@@ -7,11 +7,22 @@ import (
 	"sync/atomic"
 )
 
-var ErrErrorsLimitExceeded = errors.New("errors limit exceeded")
-
+var (
+	ErrErrorsLimitExceeded = errors.New("errors limit exceeded")
+	ErrInvalidN = errors.New("n should be positive")
+)
 type Task func() error
 
+// Run start tasks in n gorutines and stop its work when receiveing M errors from task
+// M <= 0 means no limits failed tasks
 func Run(tasks []Task, n, m int) error {
+	if n <= 0 {
+		return ErrInvalidN
+	} 
+
+	if m <= 0 {
+		m = len(tasks) + 1
+	}
 	var errCnt int32
 	taskChen := make(chan Task)
 
