@@ -2,6 +2,7 @@ package hw05parallelexecution
 
 import (
 	"errors"
+	"sync/atomic"
 	"fmt"
 	"sync"
 )
@@ -10,6 +11,43 @@ var ErrErrorsLimitExceeded = errors.New("errors limit exceeded")
 
 type Task func() error
 
+func Run(tasks []Task, n, m int) error {
+	var errCnt int32
+	taskChen := make(chan Task)
+
+	wg := sync.WaitGroup{}
+	wg.Add(n)
+	for i := 0; i < n; i++ {
+		go func() {
+			defer func() {
+				fmt.Println("Завершена гоурутина")
+			}()
+			defer wg.Done()
+			fmt.Println("Запущена гоурутина")
+			for task := range taskChen{
+				if err := task(); err != nil {
+					atomic.AddInt32(&errCnt, 1)
+				}
+			}
+		}()
+	}
+
+	for _, task := range tasks {
+		fmt.Println("Запущена задача в канал")
+		if atomic.LoadInt32(&errCnt) >= int32(m) {
+			break
+		}
+		taskChen <- task
+	}
+	close(taskChen)
+	wg.Wait()
+	if errCnt >= int32(m) {
+		return ErrErrorsLimitExceeded
+	}
+	return nil
+}
+
+/*
 func Run(tasks []Task, n, m int) error {
 	// Place your code here.
 	tasksCount := len(tasks)
@@ -112,7 +150,7 @@ func Run(tasks []Task, n, m int) error {
 				fmt.Println("____________Остановлено горутин: ", stopNumber)
 			default:
 			}
-			if errSum+noErrSum == maxNumber && !checkMaxNumberDone {
+			if errSum + noErrSum == maxNumber && !checkMaxNumberDone {
 				fmt.Println("  |   errSum = ", errSum, "; noErrSum = ", noErrSum,
 					"; maxNumber = ", maxNumber, "; number", number, "++++++++++")
 				checkMaxNumber = true
@@ -143,3 +181,4 @@ func Run(tasks []Task, n, m int) error {
 	}
 	return nil
 }
+*/
