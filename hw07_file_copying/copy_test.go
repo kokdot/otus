@@ -3,13 +3,13 @@ package main
 import (
 	"os"
 	"testing"
-
+	"log"
+	// "fmt"
 	"github.com/stretchr/testify/require"
 )
 
 const (
 	srcDir    = "./testdata/"
-	dstDir    = "./testdata/testdir/"
 	fileInput = "input.txt"
 	fileTest1 = "out_offset0_limit0.txt"
 	fileTest2 = "out_offset0_limit10.txt"
@@ -20,62 +20,88 @@ const (
 )
 
 func TestCopy(t *testing.T) {
-	_ = os.Mkdir(dstDir, 0o755)
+	dstDir, _ := os.MkdirTemp(
+	"/mnt/c/Users/user/Documents/go/otus/otus/hw07_file_copying/testdata/",
+	 "testdir",
+	)
 	defer os.RemoveAll(dstDir)
 	fromPath := srcDir + fileInput
 
 	t.Run("case offset0_limit0", func(t *testing.T) {
-		t.Skip()
-		toPath := dstDir + fileTest1
+		// t.Skip()
+		toPath, err := os.CreateTemp(dstDir, "out")
+		if err != nil {
+			log.Fatal(err)
+		}
 		toTest := srcDir + fileTest1
-		_ = Copy(fromPath, toPath, 0, 0)
-		result, _ := os.ReadFile(toPath)
+		_ = Copy(fromPath, toPath.Name(), 0, 0)
+		result, _ := os.ReadFile(toPath.Name())
 		test, _ := os.ReadFile(toTest)
-		require.Equal(t, result, test)
+		require.Equal(t, test, result)
 	})
 
-	t.Run("case out_offset0_limit10", func(t *testing.T) {
-		toPath := dstDir + fileTest2
+	t.Run("case offset0_limit10", func(t *testing.T) {
+		// t.Skip()
+		toPath, err := os.CreateTemp(dstDir, "out")
+		if err != nil {
+			log.Fatal(err)
+		}
 		toTest := srcDir + fileTest2
-		_ = Copy(fromPath, toPath, 0, 10)
-		result, _ := os.ReadFile(toPath)
+		_ = Copy(fromPath, toPath.Name(), 0, 10)
+		result, _ := os.ReadFile(toPath.Name())
 		test, _ := os.ReadFile(toTest)
-		require.Equal(t, result, test)
+		require.Equal(t, test, result)
 	})
 
-	t.Run("case out_offset0_limit1000", func(t *testing.T) {
-		toPath := dstDir + fileTest3
+	t.Run("case offset0_limit1000", func(t *testing.T) {
+		// t.Skip()
+		toPath, err := os.CreateTemp(dstDir, "out")
+		if err != nil {
+			log.Fatal(err)
+		}
 		toTest := srcDir + fileTest3
-		_ = Copy(fromPath, toPath, 0, 1000)
-		result, _ := os.ReadFile(toPath)
+		_ = Copy(fromPath, toPath.Name(), 0, 1000)
+		result, _ := os.ReadFile(toPath.Name())
 		test, _ := os.ReadFile(toTest)
-		require.Equal(t, result, test)
+		require.Equal(t, test, result)
 	})
 
-	t.Run("case out_offset0_limit100000", func(t *testing.T) {
-		toPath := dstDir + fileTest4
+	t.Run("case offset0_limit10000", func(t *testing.T) {
+		// t.Skip()
+		toPath, err := os.CreateTemp(dstDir, "out")
+		if err != nil {
+			log.Fatal(err)
+		}
 		toTest := srcDir + fileTest4
-		_ = Copy(fromPath, toPath, 0, 10000)
-		result, _ := os.ReadFile(toPath)
+		_ = Copy(fromPath, toPath.Name(), 0, 10000)
+		result, _ := os.ReadFile(toPath.Name())
 		test, _ := os.ReadFile(toTest)
-		require.Equal(t, result, test)
+		require.Equal(t, test, result)
 	})
 
-	t.Run("case out_offset100_limit1000", func(t *testing.T) {
-		toPath := dstDir + fileTest5
+	t.Run("case offset100_limit1000", func(t *testing.T) {
+		// t.Skip()
+		toPath, err := os.CreateTemp(dstDir, "out")
+		if err != nil {
+			log.Fatal(err)
+		}
 		toTest := srcDir + fileTest5
-		_ = Copy(fromPath, toPath, 100, 1000)
-		result, _ := os.ReadFile(toPath)
+		_ = Copy(fromPath, toPath.Name(), 100, 1000)
+		result, _ := os.ReadFile(toPath.Name())
 		test, _ := os.ReadFile(toTest)
-		require.Equal(t, result, test)
+		require.Equal(t, test, result)
 	})
 
-	t.Run("case out_offset6000_limit1000", func(t *testing.T) {
-		toPath := dstDir + fileTest6
+	t.Run("case offset6000_limit1000", func(t *testing.T) {
+		// t.Skip()
+		toPath, err := os.CreateTemp(dstDir, "out")
+		if err != nil {
+			log.Fatal(err)
+		}
 		toTest := srcDir + fileTest6
-		_ = Copy(fromPath, toPath, 6000, 1000)
-		result, _ := os.ReadFile(toPath)
+		_ = Copy(fromPath, toPath.Name(), 6000, 1000)
+		result, _ := os.ReadFile(toPath.Name())
 		test, _ := os.ReadFile(toTest)
-		require.Equal(t, result, test)
+		require.Equal(t, test, result)
 	})
 }
