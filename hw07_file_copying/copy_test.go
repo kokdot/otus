@@ -1,10 +1,11 @@
 package main
 
 import (
+	"log"
 	"os"
 	"testing"
-	"log"
-	// "fmt"
+
+	// "fmt".
 	"github.com/stretchr/testify/require"
 )
 
@@ -21,8 +22,8 @@ const (
 
 func TestCopy(t *testing.T) {
 	dstDir, _ := os.MkdirTemp(
-	"/mnt/c/Users/user/Documents/go/otus/otus/hw07_file_copying/testdata/",
-	 "testdir",
+		"/mnt/c/Users/user/Documents/go/otus/otus/hw07_file_copying/testdata/",
+		"testdir",
 	)
 	defer os.RemoveAll(dstDir)
 	fromPath := srcDir + fileInput

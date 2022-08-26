@@ -8,9 +8,10 @@ import (
 	"github.com/cheggaaa/pb/v3"
 )
 
-
-var ErrOffsetExceedsFileSize = errors.New("offset exceeds file size")
-var ErrUnsupportedFile = errors.New("unsupported file")
+var (
+	ErrOffsetExceedsFileSize = errors.New("offset exceeds file size")
+	ErrUnsupportedFile       = errors.New("unsupported file")
+)
 
 func Copy(fromPath, toPath string, offset, limit int64) error {
 	srcFile, err := os.Open(fromPath)
@@ -30,6 +31,10 @@ func Copy(fromPath, toPath string, offset, limit int64) error {
 	}
 	srcFileSize := srcFileStat.Size()
 
+	if offset > srcFileSize {
+		return ErrOffsetExceedsFileSize
+	}
+
 	if limit <= 0 {
 		limit = srcFileSize
 	} else if limit > srcFileSize {
@@ -43,7 +48,7 @@ func Copy(fromPath, toPath string, offset, limit int64) error {
 	offs := 0
 	for offs < int(limit) {
 		read, err := s.Read(buf)
-		if err == io.EOF {
+		if errors.Is(err, io.EOF) {
 			if _, err := dstFile.Write(buf[0:read]); err != nil {
 				return err
 			}
@@ -95,10 +100,7 @@ func Copy(fromPath, toPath string, offset, limit int64) error {
 	// 	return ErrOffsetExceedsFileSize
 	// }
 	// var count  int64 = 100
-	
-	
 
-	
 	// if offset > 0 {
 	// 	// bSrc = bSrc[offset:]
 	// }
