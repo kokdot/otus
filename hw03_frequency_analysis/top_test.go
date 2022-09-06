@@ -42,6 +42,14 @@ var text = `Как видите, он  спускается  по  лестни�
 	иногда,  особенно  когда  папа  дома,  он больше любит тихонько
 	посидеть у огня и послушать какую-нибудь интересную сказку.
 		В этот вечер...`
+var text1 = "@, &, & & || ## $$$ ! $$$ || , , , + +"
+
+var text2 = `A struct is an aggregate data type that groups together zero or more named values of
+arbitrary types as a single entity. Each value is called a field. The classic example of a
+struct from data processing is the employee record, whose fields are a unique ID, the
+employee’s name, address, date of birth, position, salary, manager, and the like. All of
+these fields are collected into a single entity that can be copied as a unit, passed to
+functions and returned by them, stored in arrays, and so on`
 
 func TestTop10(t *testing.T) {
 	t.Run("no words in empty string", func(t *testing.T) {
@@ -78,5 +86,37 @@ func TestTop10(t *testing.T) {
 			}
 			require.Equal(t, expected, Top10(text))
 		}
+	})
+
+	t.Run("Special symbol", func(t *testing.T) {
+		expected := []string{
+			",",
+			"$$$",
+			"&",
+			"+",
+			"||",
+			"!",
+			"##",
+			"&,",
+			"@,",
+			"",
+		}
+		require.Equal(t, expected, Top10(text1))
+	})
+
+	t.Run("Donovan's book", func(t *testing.T) {
+		expected := []string{
+			"a",
+			"of",
+			"and",
+			"is",
+			"the",
+			"are",
+			"as",
+			"data",
+			"fields",
+			"single",
+		}
+		require.Equal(t, expected, Top10(text2))
 	})
 }
