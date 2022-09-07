@@ -1,13 +1,13 @@
 package main
 
 import (
-	"github.com/stretchr/testify/require"
 	"log"
 	"testing"
+
+	"github.com/stretchr/testify/require"
 )
 
 func TestReadDir(t *testing.T) {
-
 	envExpected := Environment{
 		"BAR":   EnvValue{Value: "bar", NeedRemove: false},
 		"FOO":   EnvValue{Value: "   foo", NeedRemove: false},

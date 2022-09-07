@@ -2,7 +2,7 @@ package main
 
 import (
 	"bytes"
-	// "fmt"
+	// "fmt".
 	"log"
 	"os"
 	"regexp"
@@ -27,7 +27,8 @@ func ReadDir(dir string) (Environment, error) {
 	env := make(Environment)
 	fileList, err := os.ReadDir(dir)
 	if err != nil {
-		log.Fatal(err)
+		// log.Fatal(err)
+		return nil, err
 	}
 	for _, file := range fileList {
 		name := file.Name()
@@ -46,7 +47,7 @@ func ReadDir(dir string) (Environment, error) {
 			continue
 		}
 		if reNull.Match(content) {
-			content = bytes.Replace(content, []byte("\x00"), []byte("\n"), -1)
+			content = bytes.ReplaceAll(content, []byte("\x00"), []byte("\n"))
 		}
 		// fmt.Println("content --  :", content)
 		contentStr := string(content)
@@ -61,7 +62,7 @@ func ReadDir(dir string) (Environment, error) {
 			continue
 		}
 		contentStr = strings.TrimSuffix(contentStr, "\n")
-		contentStr = strings.TrimRight(string(contentStr), " \t")
+		contentStr = strings.TrimRight(contentStr, " \t")
 		env[nameFile] = EnvValue{Value: contentStr, NeedRemove: false}
 	}
 	return env, nil
