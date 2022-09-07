@@ -19,7 +19,7 @@ func RunCmd(cmd []string, env Environment) (returnCode int) {
 		}
 		// fmt.Println("key  --  :", key, "; envElem.Value  --  :", envElem.Value)
 		// fmt.Printf("\n%v=%v\n", key, envElem.Value)
-		cmdProg.Env = append(cmdProg.Environ(), fmt.Sprintf("%v=%v", key, envElem.Value))
+		cmdProg.Env = append(os.Environ(), fmt.Sprintf("%v=%v", key, envElem.Value))
 	}
 	// fmt.Println(cmdProg.Environ())
 	cmdProg.Stdout = os.Stdout
