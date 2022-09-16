@@ -16,7 +16,7 @@ func TestReadDir(t *testing.T) {
 		"HELLO": EnvValue{Value: "\"hello\"", NeedRemove: false},
 	}
 
-	envActual, err := ReadDir("/mnt/c/Users/user/Documents/go/otus/otus/hw08_envdir_tool/testdata/env/")
+	envActual, err := ReadDir("./testdata/env/")
 	if err != nil {
 		log.Fatal(err)
 	}
