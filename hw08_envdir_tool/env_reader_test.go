@@ -10,13 +10,13 @@ import (
 func TestReadDir(t *testing.T) {
 	envExpected := Environment{
 		"BAR":   EnvValue{Value: "bar", NeedRemove: false},
-		"FOO":   EnvValue{Value: "   foo", NeedRemove: false},
+		"FOO":   EnvValue{Value: "   foo\nwith new line", NeedRemove: false},
 		"UNSET": EnvValue{Value: "", NeedRemove: true},
 		"EMPTY": EnvValue{Value: "", NeedRemove: false},
 		"HELLO": EnvValue{Value: "\"hello\"", NeedRemove: false},
 	}
 
-	envActual, err := ReadDir("testdata/env/")
+	envActual, err := ReadDir("/mnt/c/Users/user/Documents/go/otus/otus/hw08_envdir_tool/testdata/env/")
 	if err != nil {
 		log.Fatal(err)
 	}

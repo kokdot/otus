@@ -2,7 +2,6 @@ package main
 
 import (
 	"bytes"
-	// "fmt".
 	"log"
 	"os"
 	"regexp"
@@ -21,13 +20,12 @@ type EnvValue struct {
 // Variables represented as files where filename is name of variable, file first line is a value.
 func ReadDir(dir string) (Environment, error) {
 	re := regexp.MustCompile(`=`)
-	reNull := regexp.MustCompile(`\x00`)
 	reFistString := regexp.MustCompile(`.*\n`)
+	reNull := regexp.MustCompile(`\x00`)
 	mapFileContent := make(map[string][]byte)
 	env := make(Environment)
 	fileList, err := os.ReadDir(dir)
 	if err != nil {
-		// log.Fatal(err)
 		return nil, err
 	}
 	for _, file := range fileList {
@@ -46,24 +44,29 @@ func ReadDir(dir string) (Environment, error) {
 			env[nameFile] = EnvValue{Value: "", NeedRemove: true}
 			continue
 		}
-		if reNull.Match(content) {
-			content = bytes.ReplaceAll(content, []byte("\x00"), []byte("\n"))
-		}
-		// fmt.Println("content --  :", content)
-		contentStr := string(content)
-		// fmt.Println("contentStr --  :", contentStr)
-		if !reFistString.MatchString(contentStr) {
+		if !reFistString.Match(content) {
+			if reNull.Match(content) {
+				content = bytes.ReplaceAll(content, []byte("\x00"), []byte("\n"))
+			}
+			contentStr := string(content)
+			contentStr = strings.TrimRight(contentStr, " \t")
+			env[nameFile] = EnvValue{Value: contentStr, NeedRemove: false}
+			continue
+		} else {
+			content = reFistString.Find(content)
+			if len(string(content)) == 1 {
+				env[nameFile] = EnvValue{Value: "", NeedRemove: false}
+				continue
+			}
+			content = content[:len(content)-1]
+			if reNull.Match(content) {
+				content = bytes.ReplaceAll(content, []byte("\x00"), []byte("\n"))
+			}
+			contentStr := string(content)
+			contentStr = strings.TrimRight(contentStr, " \t")
 			env[nameFile] = EnvValue{Value: contentStr, NeedRemove: false}
 			continue
 		}
-		contentStr = reFistString.FindString(contentStr)
-		if len(contentStr) == 1 {
-			env[nameFile] = EnvValue{Value: "", NeedRemove: false}
-			continue
-		}
-		contentStr = strings.TrimSuffix(contentStr, "\n")
-		contentStr = strings.TrimRight(contentStr, " \t")
-		env[nameFile] = EnvValue{Value: contentStr, NeedRemove: false}
 	}
 	return env, nil
 }

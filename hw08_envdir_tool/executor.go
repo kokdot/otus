@@ -2,28 +2,27 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"os/exec"
 )
 
 // RunCmd runs a command + arguments (cmd) with environment variables from env.
 func RunCmd(cmd []string, env Environment) (returnCode int) {
-	// fmt.Println("env  --  :", env)
-	// fmt.Println("cmd  --  :", cmd)
-	cmdProg := exec.Command(cmd[0])
-	cmdProg.Args = cmd
-	// fmt.Println("cmdProg.Args  --  :", cmdProg.Args)
+	cmdProg := exec.Command(cmd[1])
+	cmdProg.Args = cmd[1:]
 	for key, envElem := range env {
 		if envElem.NeedRemove {
 			os.Unsetenv(key)
 		}
-		// fmt.Println("key  --  :", key, "; envElem.Value  --  :", envElem.Value)
-		// fmt.Printf("\n%v=%v\n", key, envElem.Value)
-		cmdProg.Env = append(os.Environ(), fmt.Sprintf("%v=%v", key, envElem.Value))
+		cmdProg.Env = append(cmdProg.Env, fmt.Sprintf("%v=%v", key, envElem.Value))
 	}
-	// fmt.Println(cmdProg.Environ())
+	cmdProg.Env = append(os.Environ(), cmdProg.Env...)
 	cmdProg.Stdout = os.Stdout
 	cmdProg.Stderr = os.Stderr
-	cmdProg.Run()
-	return 1
+	if err := cmdProg.Run(); err != nil {
+		log.Fatal(err)
+	}
+	returnCode = 1
+	return returnCode
 }
