@@ -13,7 +13,7 @@ package main
 // 	}
 // 	_ = RunCmd([]string{
 // 		"./testdata/env",
-// 		"/bin/bash", 
+// 		"/bin/bash",
 // 		"./testdata/echo.sh",
 // 		"arg1=1",
 // 		"arg2=2",
