@@ -12,8 +12,9 @@ func TestRunCmd(t *testing.T) {
 		log.Fatal(err)
 	}
 	_ = RunCmd([]string{
-		"/mnt/c/Users/user/Documents/go/otus/otus/hw08_envdir_tool/testdata/env",
-		"/bin/bash", "/mnt/c/Users/user/Documents/go/otus/otus/hw08_envdir_tool/testdata/echo.sh",
+		"./testdata/env",
+		"/bin/bash", 
+		"./testdata/echo.sh",
 		"arg1=1",
 		"arg2=2",
 	},
